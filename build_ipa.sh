@@ -194,6 +194,16 @@ if ! grep -q "fk_libavcodec.xcframework" "$local_pbx"; then
         "$local_pbx"
 fi
 
+# If discord_partner_sdk.xcframework is missing, ensure project.pbxproj doesn't reference it
+DISCORD_XCF="$WORKING_LOCATION/build/discord/discord_partner_sdk.xcframework"
+if [ ! -d "$DISCORD_XCF" ]; then
+    if grep -q "D15C000" "$local_pbx"; then
+        echo "Notice: discord_partner_sdk.xcframework not found. Building without Discord Social SDK..."
+        sed -i '' -e '/D15C000/d' -e '/14D78C92308D012A00BE059E/d' "$local_pbx" 2>/dev/null || \
+        sed -i -e '/D15C000/d' -e '/14D78C92308D012A00BE059E/d' "$local_pbx" 2>/dev/null || true
+    fi
+fi
+
 cd "$BUILD_DIR"
 
 XCODEBUILD_ACTION="${XCODEBUILD_ACTION:-build}"

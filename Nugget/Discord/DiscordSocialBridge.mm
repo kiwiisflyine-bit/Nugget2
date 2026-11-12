@@ -5,10 +5,12 @@
 //  Created by 686udjie on 24/20/2026.
 //
 
+#import "DiscordSocialBridge.h"
+
+#if __has_include(<discordpp.h>)
+
 #define DISCORDPP_IMPLEMENTATION
 #include <discordpp.h>
-
-#import "DiscordSocialBridge.h"
 
 #include <memory>
 #include <string>
@@ -239,3 +241,47 @@ static NSString *DiscordString(const std::string &value) {
 }
 
 @end
+
+#else
+
+// Fallback stub implementation when discord_partner_sdk is not available
+@implementation DiscordSocialBridge
+
++ (instancetype)shared {
+    static DiscordSocialBridge *bridge;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{ bridge = [DiscordSocialBridge new]; });
+    return bridge;
+}
+
+- (void)authorize {
+    NSLog(@"[DiscordSocialSDK] Discord Social SDK is not bundled with this build");
+    [self.delegate discordSocialAuthorizationFailed:@"Discord Social SDK is not bundled with this build"];
+}
+
+- (void)connectWithAccessToken:(NSString *)accessToken {
+    NSLog(@"[DiscordSocialSDK] Discord Social SDK is not bundled with this build");
+}
+
+- (void)updateActivityWithName:(NSString *)name
+                 activityType:(NSInteger)activityType
+                       details:(nullable NSString *)details
+                          state:(nullable NSString *)state
+                    startTimeMs:(long long)startTimeMs
+                      endTimeMs:(long long)endTimeMs
+                    largeImage:(nullable NSString *)largeImage
+                     largeText:(nullable NSString *)largeText
+                    smallImage:(nullable NSString *)smallImage
+                     smallText:(nullable NSString *)smallText
+                       buttons:(NSArray<NSDictionary<NSString *, NSString *> *> *)buttons {
+}
+
+- (void)clearActivity {
+}
+
+- (void)disconnect {
+}
+
+@end
+
+#endif
