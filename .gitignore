@@ -1,0 +1,18 @@
+# Xcode
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
+!*.xcodeproj/xcshareddata/
+!*.xcodeproj/*.xcworkspace/
+
+*.xcodeproj/*.xcworkspace/*
+!*.xcodeproj/*.xcworkspace/contents.xcworkspacedata
+!*.xcodeproj/*.xcworkspace/xcshareddata/
+# Nugget schemes
+
+*.xcodeproj/*.xcworkspace/xcshareddata/*
+!*.xcodeproj/*.xcworkspace/xcshareddata/swiftpm/
+
+# Other
+.DS_Store
+/build
+__pycache__/
